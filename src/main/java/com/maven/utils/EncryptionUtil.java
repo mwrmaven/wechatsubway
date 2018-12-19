@@ -40,4 +40,23 @@ public class EncryptionUtil {
         return null;
     }
 
+    public static String md5(String key) {
+        try {
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            byte[] bytes = md5.digest(key.getBytes());
+            StringBuilder tmp = new StringBuilder();
+            for (int i = 0; i < bytes.length; i++) {
+                int bt = bytes[i]&0xff;
+                if (bt < 16) {
+                    tmp.append(0);
+                }
+                tmp.append(Integer.toHexString(bt));
+            }
+            return tmp.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
