@@ -27,14 +27,18 @@ public class LoginInterceptor implements HandlerInterceptor {
      * @return
      */
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        // 获取cookie，name为用户唯一生成的id，value为失效时间
-        Cookie[] cookies = request.getCookies();
-
         PrintWriter pw = null;
         try {
             pw = response.getWriter();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        // 获取cookie，name为用户唯一生成的id，value为失效时间
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null) {
+            pw.write(new CommonEntity(203).toString());
+            return false;
         }
 
         for (Cookie c : cookies) {

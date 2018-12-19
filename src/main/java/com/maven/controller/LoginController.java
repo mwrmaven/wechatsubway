@@ -8,10 +8,10 @@ import com.maven.utils.EncryptionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -23,8 +23,7 @@ import java.util.*;
  * 登录、登出、注册、更新个人信息
  * create by mavenr 2018/12/19
  */
-@Controller
-@RequestMapping(path = "/")
+@RestController
 public class LoginController {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -40,7 +39,7 @@ public class LoginController {
      * @param response
      * @return
      */
-    @PostMapping(path = "login", produces = "application/json")
+    @PostMapping(path = "/login", produces = "application/json")
     public CommonEntity enter(@RequestBody User user, HttpServletResponse response) {
         // 判断是否存在用户
         String name = user.getName();
@@ -80,7 +79,7 @@ public class LoginController {
      * @param response
      * @return
      */
-    @PostMapping(path = "logout", produces = "application/json")
+    @PostMapping(path = "/logout", produces = "application/json")
     public CommonEntity exit(HttpServletRequest request, HttpServletResponse response) {
         // 删除cookie
         Cookie[] cookies = request.getCookies();
@@ -103,7 +102,7 @@ public class LoginController {
      * @param user
      * @return
      */
-    @PostMapping(path = "registry", produces = "application/json")
+    @PostMapping(path = "/registry", produces = "application/json")
     public CommonEntity register(@RequestBody User user) {
         String name = user.getName();
         String password = user.getPassword();
@@ -111,9 +110,9 @@ public class LoginController {
         String email = user.getEmail();
         int gender = user.getGender();
         int role = 10;
-        String valid = "0";
+        String valid = "-1";
         if (email.equalsIgnoreCase(user.getVerificationCode())) {
-            valid = "1";
+            valid = "0";
         }
 
         Map<String, Object> param = new HashMap<>();
