@@ -1,6 +1,7 @@
 package com.maven.controller;
 
 import com.maven.dealwith.wechat.Subway;
+import com.maven.entity.CommonEntity;
 import com.maven.entity.TextMessage;
 import com.maven.utils.EncryptionUtil;
 import com.maven.utils.IpUtil;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -109,6 +111,12 @@ public class WechatSubway {
                 pw.close();
             }
         }
+    }
+
+    @PostMapping(path = "/beginend", produces = "application/json")
+    public CommonEntity getBeginAndEnd(@RequestBody String stationName) {
+        String result = subway.stationTime(stationName);
+        return new CommonEntity(result);
     }
 
     /**

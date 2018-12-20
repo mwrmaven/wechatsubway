@@ -16,11 +16,6 @@ public class CommonEntity implements Serializable {
         this.code = code;
     }
 
-    public CommonEntity(String message) {
-        this.code = 200;
-        this.message = message;
-    }
-
     public CommonEntity(Object data) {
         this.code = 200;
         this.data = data;
@@ -29,23 +24,6 @@ public class CommonEntity implements Serializable {
     public CommonEntity(int code, String message) {
         this.code = code;
         this.message = message;
-    }
-
-    public CommonEntity(int code, Object data) {
-        this.code = code;
-        this.data = data;
-    }
-
-    public CommonEntity(String message, Object data) {
-        this.code = 200;
-        this.message = message;
-        this.data = data;
-    }
-
-    public CommonEntity(int code, String message, Object data) {
-        this.code = code;
-        this.message = message;
-        this.data = data;
     }
 
     public int getCode() {
