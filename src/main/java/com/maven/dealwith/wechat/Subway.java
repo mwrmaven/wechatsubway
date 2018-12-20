@@ -1,5 +1,6 @@
 package com.maven.dealwith.wechat;
 
+import com.maven.conf.Conf;
 import com.maven.exceptions.PromptMessage;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -33,14 +34,7 @@ public class Subway {
      */
     public String stationTime(String station_name) {
         // 从配置文件获取bjsubway的url
-        Properties properties = new Properties();
-        try {
-            properties.load(new FileInputStream(ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + "conf.properties")));
-        } catch (IOException e) {
-            logger.error(PromptMessage.CONF_ERROR);
-        }
-
-        String url = properties.getProperty("BJ.Station.Url");
+        String url = Conf.get("BJ.Station.Url");
         // 获取网页信息
         String html = getHtml(url);
         if (html.contains("地铁公告")) {
