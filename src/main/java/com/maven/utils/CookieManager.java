@@ -1,6 +1,7 @@
 package com.maven.utils;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -16,11 +17,24 @@ public class CookieManager {
         return cookies.get(key);
     }
 
-    public static void set(Object key, Long value) {
-        cookies.put(key, value);
+    public static boolean set(Object key, Long value) {
+        try {
+            cookies.put(key, value);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
-    public static void delete(Object key) {
-        cookies.remove(key);
+    public static boolean delete(Object key) {
+        Iterator<Map.Entry<Object, Long>> iterator = cookies.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Object, Long> entry = iterator.next();
+            if (entry.getKey().equals(key)) {
+                iterator.remove();
+                return true;
+            }
+        }
+        return false;
     }
 }

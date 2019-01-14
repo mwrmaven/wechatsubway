@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
@@ -43,7 +42,7 @@ public class LoginController {
     public CommonEntity enter(@RequestBody User user, HttpServletResponse response) {
         // 判断是否存在用户
         String name = user.getName();
-        String pwd = user.getPassword();
+        String pwd = EncryptionUtil.md5(user.getPassword());
 
         Map<String, Object> param = new HashMap<>();
         param.put("name", name);
@@ -63,7 +62,7 @@ public class LoginController {
         Long age = calendar.getTime().getTime();
         Cookie cookie = new Cookie(key, age + "");
         cookie.setPath("/wechatsubway/cookies/"); // cookie的地址，如果没有一级目录，所有网址的请求都能找到这个cookie
-        cookie.setMaxAge(60 * 60); // 最大生存时间，单位为秒
+        cookie.setMaxAge(60 * 60 * 24 * 7); // 最大生存时间，单位为秒
         response.addCookie(cookie); // 将cookie添加到响应中
 
         CookieManager.set(key, age);
@@ -105,7 +104,7 @@ public class LoginController {
     @PostMapping(path = "/registry", produces = "application/json")
     public CommonEntity register(@RequestBody User user) {
         String name = user.getName();
-        String password = user.getPassword();
+        String password = EncryptionUtil.md5(user.getPassword()).toUpperCase();
         String telephone = user.getTelephone();
         String email = user.getEmail();
         int gender = user.getGender();

@@ -41,6 +41,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             return false;
         }
 
+        // 遍历浏览器中所有的cookie
         for (Cookie c : cookies) {
             String key = c.getName();
             String value = c.getValue();
@@ -49,12 +50,7 @@ public class LoginInterceptor implements HandlerInterceptor {
                 if (Long.parseLong(value) > new Date().getTime()) {
                     return true;
                 }
-                // 被拦截之后，返回数据给客户端
-                pw.write(new CommonEntity(203).toString());
-                return false;
             }
-            pw.write(new CommonEntity(203).toString());
-            return false;
         }
         pw.write(new CommonEntity(203).toString());
         return false;
