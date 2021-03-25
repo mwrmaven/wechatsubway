@@ -13,9 +13,14 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import javax.sql.DataSource;
 
+/**
+ * @Classname MasterDataSourceConfig
+ * @Description basePackages 指向的是mapper的文件夹，后面的sqlSessionFactoryRef关联的是下面的名称为masterSqlSessionFactory的bean,这个可以按需求配置，不一定固定写哪一个
+ * @Date 2021/3/25 15:32
+ * @author mavenr
+ */
 @SpringBootConfiguration
 @MapperScan(basePackages = "com.maven.mapper.master", sqlSessionFactoryRef = "masterSqlSessionFactory")
-// basePackages 指向的是mapper的文件夹，后面的sqlSessionFactoryRef关联的是下面的名称为masterSqlSessionFactory的bean,这个可以按需求配置，不一定固定写哪一个
 public class MasterDataSourceConfig {
 
     @Bean(name = "masterDataSource")

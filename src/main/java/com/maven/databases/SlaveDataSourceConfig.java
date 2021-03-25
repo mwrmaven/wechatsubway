@@ -12,6 +12,12 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import javax.sql.DataSource;
 
+/**
+ * @Classname SlaveDataSourceConfig
+ * @Description TODO
+ * @Date 2021/3/25 16:29
+ * @author mavenr
+ */
 @SpringBootConfiguration
 @MapperScan(basePackages = "com.maven.mapper.slave", sqlSessionFactoryRef = "slaveSqlSessionFactory")
 public class SlaveDataSourceConfig {

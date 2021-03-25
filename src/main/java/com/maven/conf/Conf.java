@@ -13,6 +13,8 @@ import java.util.Properties;
 
 /**
  * 项目启动的同时加载配置信息
+ * @Order(1) 启动排序为 1
+ * @author mavenr
  * create by mavenr 2018/12/19
  */
 @Component

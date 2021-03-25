@@ -1,52 +1,42 @@
 package com.maven.entity;
 
+import com.maven.sysenum.CodeEnum;
+import lombok.*;
+
 import java.io.Serializable;
 
+/**
+ * @Classname CommonEntity
+ * @Description 返回信息基础类
+ * @Date 2021/3/25 15:36
+ * @author mavenr
+ */
+@Data
+@Builder
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class CommonEntity implements Serializable {
+    /**
+     * 状态码
+     */
+    private Integer code;
 
-    private static final long serialVersionUID = -2226016185995268781L;
-
-    private int code;
-
+    /**
+     * 提示信息
+     */
     private String message;
 
+    /**
+     * 返回的对象信息
+     */
     private Object data;
 
-    public CommonEntity(int code) {
-        this.code = code;
+    public static CommonEntity successReturn(Object data) {
+        return new CommonEntity(CodeEnum.SUCCESS.getCode(), CodeEnum.SUCCESS.getDesc(), data);
     }
 
-    public CommonEntity(Object data) {
-        this.code = 200;
-        this.data = data;
-    }
-
-    public CommonEntity(int code, String message) {
-        this.code = code;
-        this.message = message;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
+    public static CommonEntity errorReturn(int code, Object data) {
+        return new CommonEntity(code, CodeEnum.ERROR.getDesc(), data);
     }
 }

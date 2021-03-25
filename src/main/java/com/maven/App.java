@@ -11,7 +11,11 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 @SpringBootApplication
 public class App extends SpringBootServletInitializer {
 
-    // TODO 类继承SpringBootServletInitializer，并重写configure方法和修改pom.xml文件，来使用外部的tomcat，如果不使用外部的tomcat，则不需要如此
+    /**
+     * 类继承SpringBootServletInitializer，并重写configure方法和修改pom.xml文件，来使用外部的tomcat，如果不使用外部的tomcat，则不需要如此
+     * @param application
+     * @return
+     */
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(App.class);

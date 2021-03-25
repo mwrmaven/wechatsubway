@@ -6,23 +6,16 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
-
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Properties;
 
 /**
- * 地铁相关服务
+ * 地铁相关服务类
+ * @author mavenr
  */
 @Service
 public class Subway {
-
-    private static final Logger logger = LoggerFactory.getLogger(Subway.class);
 
     @Autowired
     ParseStationHtml psh;

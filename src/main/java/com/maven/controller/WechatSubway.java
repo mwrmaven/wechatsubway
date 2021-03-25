@@ -6,8 +6,7 @@ import com.maven.entity.TextMessage;
 import com.maven.utils.EncryptionUtil;
 import com.maven.utils.IpUtil;
 import com.maven.utils.XmlUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,21 +17,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.security.MessageDigest;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Map;
 
 /**
  * 接收和处理微信发送过来的数据，并返回结果
+ * @author mavenr
  * create by maven on 2018/12/14
  */
+@Slf4j
 @RestController
 public class WechatSubway {
 
-    private static final Logger logger = LoggerFactory.getLogger(WechatSubway.class);
-
-    private final String TOKEN = "stationQuery"; // token密钥，用于验证微信消息是否是合法的
+    /**
+     * token密钥，用于验证微信消息是否是合法的
+     */
+    private final String TOKEN = "stationQuery";
 
     @Autowired
     private Subway subway;
@@ -44,9 +44,9 @@ public class WechatSubway {
      */
     @GetMapping(path = "/chat", produces = "application/json")
     public void getWx(HttpServletRequest request, HttpServletResponse response) {
-        logger.info("本次请求的发起的ip地址为：{}", IpUtil.parseIpAddr(request));
+        log.info("本次请求的发起的ip地址为：{}", IpUtil.parseIpAddr(request));
 
-        logger.info("自定义的token值为：{}", request.getParameter("station"));
+        log.info("自定义的token值为：{}", request.getParameter("station"));
 
         // 微信加密签名
         String signature = request.getParameter("signature");
@@ -57,19 +57,17 @@ public class WechatSubway {
         // 随机数
         String randomNum = request.getParameter("nonce");
 
-        logger.info("signature == " + signature);
-        logger.info("echostr == " + randomStr);
-        logger.info("timestamp == " + timestamp);
-        logger.info("nonce == " + randomNum);
+        log.info("signature == " + signature);
+        log.info("echostr == " + randomStr);
+        log.info("timestamp == " + timestamp);
+        log.info("nonce == " + randomNum);
 
         String[] str = {TOKEN, timestamp, randomNum};
         Arrays.sort(str);
         String bigStr = str[0] + str[1] + str[2];
 
-        MessageDigest messageDigest = EncryptionUtil.initDigest();
-        messageDigest.update(bigStr.getBytes());
         // SHA-1加密
-        String digest = EncryptionUtil.byte2Hex(messageDigest.digest());
+        String digest = EncryptionUtil.sha(bigStr);
 
         // 验证签名是否合法，合法，则返回随机字符串
         PrintWriter printWriter = null;
@@ -96,13 +94,14 @@ public class WechatSubway {
      */
     @PostMapping(path = "/chat", produces = "application/json")
     public void postWx(HttpServletRequest request, HttpServletResponse response) {
-        response.setCharacterEncoding("UTF-8"); // 设置response的返回格式，避免出现乱码
+        // 设置response的返回格式，避免出现乱码
+        response.setCharacterEncoding("UTF-8");
         PrintWriter pw = null;
         try {
             pw = response.getWriter();
             // 接受微信传来的消息，并返回消息
             String result = acceptMessage(request);
-            logger.info("请求到的结果为：{}", request);
+            log.info("请求到的结果为：{}", request);
             pw.print(result);
         } catch (IOException e) {
             e.printStackTrace();
@@ -116,7 +115,7 @@ public class WechatSubway {
     @PostMapping(path = "/beginend", produces = "application/json")
     public CommonEntity getBeginAndEnd(@RequestBody String stationName) {
         String result = subway.stationTime(stationName);
-        return new CommonEntity(result);
+        return CommonEntity.successReturn(result);
     }
 
     /**
@@ -151,7 +150,7 @@ public class WechatSubway {
         TextMessage tm = new TextMessage();
         tm.setToUserName(fromUserName);
         tm.setFromUserName(toUserName);
-        tm.setCreateTime(new Date().getTime());
+        tm.setCreateTime(System.currentTimeMillis());
         tm.setMsgType("text");
 
         if ("subscribe".equals(content)) {
@@ -164,7 +163,7 @@ public class WechatSubway {
 
         // 将回复的消息格式化为xml格式
         String result = XmlUtil.messageToXml(tm);
-        logger.info("查询地铁站回复的消息为：{}", result);
+        log.info("查询地铁站回复的消息为：{}", result);
 
         return result;
     }

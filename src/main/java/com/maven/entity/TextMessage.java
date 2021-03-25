@@ -1,21 +1,21 @@
 package com.maven.entity;
 
+import lombok.*;
+
 /**
  * 微信消息实体类
+ * @author mavenr
  * create by maven 2018/12/14
  */
+@Data
+@ToString
 public class TextMessage extends BaseMessage implements Cloneable  {
-    // 回复的消息内容
+    /**
+     * 回复的消息内容
+     */
     private String content;
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
+    @Override
     public TextMessage clone() {
         try {
             return (TextMessage) super.clone();

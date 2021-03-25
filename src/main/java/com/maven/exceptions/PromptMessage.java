@@ -2,6 +2,7 @@ package com.maven.exceptions;
 
 /**
  * 提示信息
+ * @author mavenr
  * create by mwr 2018/12/14
  */
 public class PromptMessage {

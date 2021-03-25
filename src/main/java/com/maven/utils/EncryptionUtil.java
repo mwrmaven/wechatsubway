@@ -5,41 +5,41 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * 加密算法
+ * @author mavenr
  * create by maven 2018/12/14
  */
 public class EncryptionUtil {
 
-    private static MessageDigest messageDigest;
-
     /**
-     * 将字节转换成16进制的字符串
-     *
-     * @param b
+     * SHA加密算法
      * @return
      */
-    public static String byte2Hex(byte[] b) {
+    public static String sha(String key) {
         StringBuilder stringBuilder = new StringBuilder();
         String tmp;
-        for (int i = 0; i < b.length; i++) {
-            tmp = Integer.toHexString(b[i] & 0xFF);
-            if (tmp.length() == 1) {
-                stringBuilder.append("0");
-            }
-            stringBuilder.append(tmp);
-        }
-        return stringBuilder.toString();
-    }
-
-    public static MessageDigest initDigest() {
         try {
-            messageDigest = MessageDigest.getInstance("SHA-1");
-            return messageDigest;
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
+            messageDigest.update(key.getBytes());
+            byte[] digest = messageDigest.digest();
+
+            for (int i = 0; i < digest.length; i++) {
+                tmp = Integer.toHexString(digest[i] & 0xFF);
+                if (tmp.length() == 1) {
+                    stringBuilder.append("0");
+                }
+                stringBuilder.append(tmp);
+            }
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         return null;
     }
 
+    /**
+     * MD5加密
+     * @param key
+     * @return
+     */
     public static String md5(String key) {
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");

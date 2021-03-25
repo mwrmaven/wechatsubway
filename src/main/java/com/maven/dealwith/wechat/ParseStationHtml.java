@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * 解析网页中需要查询的数据
+ * @author mavenr
  * create by maven 2018/12/14
  */
 @Service
@@ -301,14 +302,4 @@ public class ParseStationHtml {
             return result;
         }
     }
-
-//    public static void main(String[] args) {
-//        String url = "http://www.bjsubway.com/e/action/ListInfo/?classid=39&ph=1";
-//        String subwayHtml = new Subway().getHtml(url).replaceAll("<th>", "<td>");
-//        System.out.println(subwayHtml);
-//        subwayHtml = subwayHtml.replaceAll("<th ", "<td ");
-//        subwayHtml = subwayHtml.replaceAll("</th>", "</td>");
-//        String results = new ParseStationHtml().parse(subwayHtml, "古城");
-//        System.out.println(results);
-//    }
 }
